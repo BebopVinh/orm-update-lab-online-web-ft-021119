@@ -27,8 +27,9 @@ class Student
   def save
     if self.id != nil
       update_sql = <<-SQL
-        UPDATE students SET name = (?), grade = (?)
+        UPDATE students SET name = (?), grade = (?) WHERE id = (?)
       SQL
+      DB[:conn].execute(sql, self.name, self.grade, self.id)
     else
       insert_sql = <<-SQL
         INSERT INTO students (name, grade)
@@ -38,7 +39,7 @@ class Student
       id_sql = <<-SQL
           SELECT id FROM students WHERE name = (?) AND grade = (?)
       SQL
-      id_from_db = DB[:conn].execute(id_sql, self.name, self.grade).flatten.first
+      self.id = DB[:conn].execute(id_sql, self.name, self.grade).flatten.first
     end
   end
 end
