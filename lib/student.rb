@@ -29,7 +29,7 @@ class Student
       update_sql = <<-SQL
         UPDATE students SET name = (?), grade = (?) WHERE id = (?)
       SQL
-      DB[:conn].execute(sql, self.name, self.grade, self.id)
+      DB[:conn].execute(update, self.name, self.grade, self.id)
     else
       insert_sql = <<-SQL
         INSERT INTO students (name, grade)
