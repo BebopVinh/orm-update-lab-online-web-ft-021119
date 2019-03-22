@@ -25,24 +25,18 @@ class Student
   end
 
   def save
-    insert_sql = <<-SQL
-      INSERT INTO students (name, grade)
-      VALUES (?, ?)
-    SQL
-    DB[:conn].execute(insert_sql, self.name, self.grade)
-
-    id_sql = <<-SQL
-        SELECT id FROM students WHERE name = (?) AND grade = (?)
-    SQL
-    id_from_db = DB[:conn].execute(id_sql, self.name, self.grade).flatten.first
-
-    if self.id = id_from_db
-      update_sql = <<-SQL
-        UPDATE students SET name=(?), grade=(?) WHERE id = (?)
-      SQL
-      DB[:conn].execute(update_sql, self.name, self.grade, id_from_db)
+    if self.id != nil
+      
     else
-      self.id = id_from_db
+      insert_sql = <<-SQL
+        INSERT INTO students (name, grade)
+        VALUES (?, ?)
+      SQL
+      DB[:conn].execute(insert_sql, self.name, self.grade)
+      id_sql = <<-SQL
+          SELECT id FROM students WHERE name = (?) AND grade = (?)
+      SQL
+      id_from_db = DB[:conn].execute(id_sql, self.name, self.grade).flatten.first
     end
   end
 end
